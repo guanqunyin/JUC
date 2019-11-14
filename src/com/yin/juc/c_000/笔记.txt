@@ -1,0 +1,8 @@
+1. 什么叫线程？
+     一个程序里不同的执行路劲
+2. 启动线程的三种方式？
+     a. Thread b.Runnable c.ThreadPool
+3. Sleep: 让当前线程睡眠， 不释放锁
+   yield： 让出当前线程所占的cpu， 重新回到等待队列，有可能还是会被cpu选中并执行
+   join： 让调用该方法的线程加入到当前线程之前，并先执行
+4. interrupt方法。 中断 sleep， join, wait, LockSupport.partNanos, LockSupport.parkUntil方法
