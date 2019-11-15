@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
  * 模拟银行账户
    设置值加锁
    读不加锁
-   这样是否可行
+   这样是否可行?
+    Answer: 可能导致脏读
  */
 public class Account {
 
@@ -23,26 +24,29 @@ public class Account {
     }
 
     public synchronized void setBalance(double balance) {
+        ThreadHelper.sleep(2, TimeUnit.SECONDS);
         this.balance = balance;
     }
 
-    public double getBalance() {
+    public /*synchronized*/ double getBalance() {
+
+        System.out.println("I am getting balance");
         return balance;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Account account = new Account("yin");
         new Thread(()->{
-            ThreadHelper.sleep(2, TimeUnit.SECONDS);
-            account.setBalance(100);
+                account.setBalance(100);
         }).start();
 
         ThreadHelper.sleep(1, TimeUnit.SECONDS);
 
         new Thread(()->{
-            System.out.println(account.getBalance());
+                System.out.println(account.getBalance());
         }).start();
 
+        account.wait();
 
     }
 }

@@ -36,7 +36,7 @@ public class TestReentrantLock {
 
 }
 
-//TODO synchronized为什么是可重入的？
+//synchronized为什么是可重入的？ 答: 如果不让重入的话， 那么就会导致死锁的发生。
 class A{
 
     protected synchronized void print(){
