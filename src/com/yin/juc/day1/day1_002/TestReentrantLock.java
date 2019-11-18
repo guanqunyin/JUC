@@ -1,4 +1,4 @@
-package com.yin.juc.c_002;
+package com.yin.juc.day1.day1_002;
 
 /**
  * 一个同步方法可以调用另外一个同步方法，一个线程已经拥有某一个对象的锁，再次申请的时候仍然会得到该对象的锁

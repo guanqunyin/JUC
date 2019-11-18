@@ -1,4 +1,4 @@
-package com.yin.juc.c_000;
+package com.yin.juc.day1.day1_000;
 
 /**
  * Created by Administrator on 2019/11/14.

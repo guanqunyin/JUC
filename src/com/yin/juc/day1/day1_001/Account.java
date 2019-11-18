@@ -1,4 +1,4 @@
-package com.yin.juc.c_001;
+package com.yin.juc.day1.day1_001;
 
 import com.yin.helper.ThreadHelper;
 
