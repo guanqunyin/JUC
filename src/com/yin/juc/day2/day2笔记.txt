@@ -1,4 +1,4 @@
-volatile:
+---volatile:
     -保证线程可见性
         -MESI： 缓存一致性协议（Modified, Exclusive, Shared, Invalid）
     -禁止指令重排序
@@ -10,4 +10,40 @@ volatile:
 
 
 
-锁的粗化：当一个方法有很多很多的细粒度的锁，这个时候可以进行锁的粗化，直接把方法都加上锁。
+    --锁的粗化：当一个方法有很多很多的细粒度的锁，这个时候可以进行锁的粗化，直接把方法都加上锁。
+
+---CAS(无锁优化，自旋）
+    --Compare And Set
+    --cas(V v, Expected e, V newValue)
+        if (v==e)
+            v=newValue
+        else
+            try again or fail
+
+    该操作有CPU原语支持保证原子性
+
+    ABA问题
+    加version
+    A 1.0
+    B 2.0
+    C 3.0
+    cas(V v, Expected e, V newValue, Version version, Version expectedVersion)
+        if (v==e && version==expectedVersion)
+            v=newValue
+        else
+            try again or fail
+    如果基础类型，无所谓。 引用类型， 你的女朋友跟你复合，之前经历了别的人
+
+---Unsafe = c c++的指针
+    -直接操作内存
+        -allocateMemory putXx freeMemory pageSize
+    -直接生成类实例
+        -allocateInstance
+    -直接操作类或实例变量
+        -objectFieldOffset
+        -getInt
+        -getObject
+    -CAS相关操作
+        -compareAndSwapObject
+    - c --> malloc free c++ --> new delete
+
