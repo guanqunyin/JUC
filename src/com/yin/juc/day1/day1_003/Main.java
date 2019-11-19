@@ -1,4 +1,4 @@
-package com.yin.juc.c_003;
+package com.yin.juc.day1.day1_003;
 
 public class Main {
 
