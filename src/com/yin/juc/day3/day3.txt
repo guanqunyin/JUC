@@ -1,0 +1,9 @@
+LongAdder:
+1000个线程，每个线程都对同一个数字叠加10 0000 次。
+把数字放到一个数组里面[0, 0, 0, 0]，比如每250个线程加一个锁，分段锁的概念，锁的细粒度化。然后最终把数字求和
+
+ReentrantLock VS synchronized
+CAS vs sync
+trylock()
+lockInterruptibly()
+    公平锁和非公平锁
