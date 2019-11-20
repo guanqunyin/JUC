@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Administrator on 2019/11/20.
  */
-public class T_05_TestCountDownLatch {
+public class T06_TestCountDownLatch {
 
     public static void main(String[] args) {
         CountDownLatch countDownLatch = new CountDownLatch(10);
@@ -24,6 +24,7 @@ public class T_05_TestCountDownLatch {
                         System.out.println(Thread.currentThread().getName());
                         ThreadHelper.sleep(1, TimeUnit.SECONDS);
                         countDownLatch.countDown();
+                        System.out.println("I will be executed");
                     }
                 }
             }));
