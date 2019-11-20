@@ -1,4 +1,5 @@
 问题大全：
      1. jvm的线程是否与操作系统的线程一一对应？ 可以理解为一一对应的
 TODO 2. super关键字的理解?
-TODO 3. notify(), notifyAll()的区别
+     3.notify(), notifyAll()的区别: notify 只会唤醒其中一个线程，而notifyAll会把所有的线程都唤醒
+TODO 4.

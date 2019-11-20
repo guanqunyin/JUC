@@ -1,6 +1,6 @@
 ---volatile:
     -保证线程可见性
-        -MESI： 缓存一致性协议（Modified, Exclusive, Shared, Invalid）
+        -TODO MESI： 缓存一致性协议（Modified, Exclusive, Shared, Invalid）
     -禁止指令重排序
         -DCL（Double check Lock）单例, Mgr06.java
          问：为什么在Double check Lock中，实例对象需要用 volatile来修饰？
@@ -34,7 +34,7 @@
             try again or fail
     如果基础类型，无所谓。 引用类型， 你的女朋友跟你复合，之前经历了别的人
 
----Unsafe = c c++的指针
+---TODO Unsafe = c c++的指针
     -直接操作内存
         -allocateMemory putXx freeMemory pageSize
     -直接生成类实例
