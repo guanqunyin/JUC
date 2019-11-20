@@ -3,8 +3,8 @@
         -MESI： 缓存一致性协议（Modified, Exclusive, Shared, Invalid）
     -禁止指令重排序
         -DCL（Double check Lock）单例, Mgr06.java
-        TODO 问：为什么在Double check Lock中，实例对象需要用 volatile来修饰？
-         答：因为第一个判断不在synchronized代码块中，
+         问：为什么在Double check Lock中，实例对象需要用 volatile来修饰？
+         答：因为第一个判断不在synchronized代码块中，且synchronized并不能阻止指令重排序
             Thread A进入同步代码块， 并初始化对象，分三个步骤， 1.new一块内存 2.给变量赋初始值int c=0  3. c=8, 4. c赋值给栈里的引用
             由于指令重排序，步骤4先于3发生，当Thread A执行4之后，CPU给到了另一个线程Thread B， 它读到的是 c=0;
 
