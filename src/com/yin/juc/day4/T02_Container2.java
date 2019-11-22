@@ -2,6 +2,9 @@ package com.yin.juc.day4;
 
 import com.yin.helper.ThreadHelper;
 
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,13 +15,11 @@ public class T02_Container2<E> {
 
     static final Object object = new Object();
 
-    Node<E> head;
-
-    Node<E> tail;
-
     int size;
 
     final int capacity;
+
+    private LinkedList<E> linkedList = new LinkedList<>();
 
     public T02_Container2(int capacity) {
         this.capacity = capacity;
@@ -27,25 +28,17 @@ public class T02_Container2<E> {
 
     void put(E e){
         synchronized(object) {
-            if (size > capacity) {
+            while (linkedList.size() >= capacity) {
                 try {
-                    object.notify();
                     object.wait();
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
             }
-
-            Node node = new Node();
-            node.item = e;
-            if (head == null) {
-                head = tail = node;
-            } else {
-                head.next = node;
-                tail = node;
-            }
-            size++;
-            System.out.println(Thread.currentThread().getName() + " produce " + node.item);
+            System.out.println(Thread.currentThread().getName() +" size:"+linkedList.size()+" ; produce " + e);
+            linkedList.addLast(e);
+            System.out.println();
+            object.notify();
         }
     }
 
@@ -65,66 +58,54 @@ public class T02_Container2<E> {
 
     E get(){
         synchronized(object) {
-            System.out.println("head: " + (head==null?"null":head.item));
-
-            if (head == null)
+            while (linkedList.size() == 0) {
                 try {
-                    object.notify();
+                    System.out.println(Thread.currentThread().getName() + " ready to wait");
                     object.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-            Node<E> nodeToBeRemoved = head;
-            if (head == tail) {
-                head = tail = null;
-            } else {
-                Node<E> headNext = head.next;
-                head = headNext;
             }
-            size--;
-            System.out.println(Thread.currentThread().getName() + " consume " + nodeToBeRemoved.item);
-            return nodeToBeRemoved.item;
-        }
 
+            System.out.println(Thread.currentThread().getName() + " ready to awaken");
+
+            E e = null;
+            try {
+                e = linkedList.removeFirst();
+            } catch (NoSuchElementException exception) {
+
+            }
+            System.out.println(Thread.currentThread().getName() + " consume " + e);
+            object.notify();
+            return e;
+        }
     }
 
-    private static class Node<E> {
-        Node<E> next;
-        E item;
-
-        public Node(Node<E> next, E item){
-            this.next = next;
-            this.item = item;
-        }
-
-        public Node(){
-        }
-
-    }
 
     public static void main(String[] args) {
 
         T02_Container2<String> t02_container2 = new T02_Container2(10);
+        Random random = new Random(100);
         //2个生产者
-        for (int i = 0; i < 2; i++) {
-            int finalI = i;
+        for (int i = 0; i < 10; i++) {
             new Thread(()-> {
-                for (int j = 0; j < 10; j++) {
-                    t02_container2.put(finalI + " - " + j);
+                while (true) {
+                    t02_container2.put("" + random.nextInt());
+                    ThreadHelper.sleep(1, TimeUnit.SECONDS);
                 }
-            }, "produce-"+i).start();
+            }, "Produce-"+i).start();
         }
+
 
 //        new Thread(()-> t02_container2.put(2), "produce-2").start();
 
 //        ThreadHelper.sleep(1, TimeUnit.SECONDS);
         //10个消费者
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             new Thread(()-> {
-                String s = null;
-                while ((s=t02_container2.get()) != null) {
-
+                while (true) {
+                    t02_container2.get();
+                    ThreadHelper.sleep(1, TimeUnit.SECONDS);
                 }
             } , "consumer-"+i).start();
         }
