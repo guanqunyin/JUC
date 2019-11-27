@@ -13,13 +13,23 @@ import java.util.concurrent.TimeUnit;
 * */
 public class T03_A1B2 {
 
+    static boolean Thread1ExecutedFlag = false;
+
     public static void main(String[] args) {
         final Object object = new Object();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 synchronized (object) {
                     for (char i = 'A'; i <= 'Z'; i++) {
+                        if (!Thread1ExecutedFlag) {
+                            try {
+                                object.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         System.out.println(i);
                         object.notify();
                         try {
@@ -40,6 +50,10 @@ public class T03_A1B2 {
                 synchronized (object){
                     for (int i = 1; i <= 26; i++) {
                         try {
+                            if (!Thread1ExecutedFlag) {
+                                Thread1ExecutedFlag = true;
+                                object.notify();
+                            }
                             object.wait();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -52,7 +66,7 @@ public class T03_A1B2 {
             }
         });
         thread1.start();
-        ThreadHelper.sleep(1, TimeUnit.SECONDS);
+//        ThreadHelper.sleep(1, TimeUnit.SECONDS);
         thread.start();
     }
 }
