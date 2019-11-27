@@ -7,7 +7,7 @@ package com.yin.juc.day4;
  * 那么总共应该是两个元素，size也应该是2.
  * 然后也执行了size++，完了size还是1，也只存储了一个元素。但是其实元素丢了两个进去了已经
  * 这就是线程不安全的地方
- * TODO 看看ArrayList哪里不安全了
+ * 看看ArrayList哪里不安全了
  *  ArrayList的add方法源码
  *  ensureCapacityInternal(size + 1);  // Increments modCount!!
     elementData[size++] = e;
