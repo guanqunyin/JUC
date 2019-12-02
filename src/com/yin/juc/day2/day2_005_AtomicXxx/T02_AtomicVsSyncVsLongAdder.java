@@ -1,12 +1,24 @@
 package com.yin.juc.day2.day2_005_AtomicXxx;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
-/* Mac：
- *    synchronized 59ms
- *    Atomic       2154ms
- *    LongAdder    202ms
+/*
+ * Windows：
+ *    ThreadNumber: 2
+         *    synchronized 22ms
+         *    Atomic       9ms
+         *    LongAdder    10ms
+     ThreadNumber: 10
+        *    synchronized 61ms
+        *    Atomic       31ms
+        *    LongAdder    15ms
+     ThreadNumber: 2000
+        *    synchronized 8803ms
+        *    Atomic       6528ms
+        *    LongAdder    621ms
  */
 public class T02_AtomicVsSyncVsLongAdder {
     static long count2 = 0L;
@@ -15,15 +27,22 @@ public class T02_AtomicVsSyncVsLongAdder {
 
     public static void main(String[] args) throws InterruptedException {
         T02_AtomicVsSyncVsLongAdder atomic = new T02_AtomicVsSyncVsLongAdder();
-        Thread[] threads = new Thread[1000];
+        final int loopNumber = 100000;
+        final int ThreadNumber = 2000;
+        Thread[] threads = new Thread[ThreadNumber];
         final Object object = new Object();
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new Thread(()->{
-                synchronized (object) {
-                    for (int j = 0; j < 100000; j++) {
-                        count2++;
+            threads[i] = new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    for (int j = 0; j < loopNumber; j++) {
+                        synchronized (object) {
+                            count2++;
+                        }
                     }
                 }
+
+
             });
         }
 
@@ -44,9 +63,12 @@ public class T02_AtomicVsSyncVsLongAdder {
         System.out.println("=======================");
 
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new Thread(()->{
-                for (int j = 0; j < 100000; j++) {
-                    count1.incrementAndGet();
+            threads[i] = new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    for (int j = 0; j < loopNumber; j++) {
+                        count1.incrementAndGet();
+                    }
                 }
             });
         }
@@ -69,7 +91,7 @@ public class T02_AtomicVsSyncVsLongAdder {
 
         for (int i = 0; i < threads.length; i++) {
             threads[i] = new Thread(()->{
-                for (int j = 0; j < 100000; j++) {
+                for (int j = 0; j < loopNumber; j++) {
                     count3.increment();
                 }
             });
@@ -87,7 +109,7 @@ public class T02_AtomicVsSyncVsLongAdder {
 
         long end2 = System.currentTimeMillis();
         System.out.println("end: " + end);
-        System.out.println("AtomicXxx Time elapsed: " + (end2-start2) + "ms");
+        System.out.println("Long Time elapsed: " + (end2-start2) + "ms");
         System.out.println(count3.longValue());
         System.out.println("=======================");
 
