@@ -5,12 +5,25 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * TODO 写一个程序，证明AtomXXX类比synchronized更高效.
- *     答： Mac下synchronized比AtomicXxx快很多。
+ * 写一个程序，证明AtomXXX类比synchronized更高效.
+ *     ThreadNumber: 2
+ *          sync: 24ms
+ *          Atomic: 15ms
+ *     ThreadNumber: 10
+*  *        sync: 51ms
+ *  *       Atomic: 31ms
+ *  ThreadNumber: 100
+ *          sync: 485ms
+ *          Atomic: 210ms
+ *   ThreadNumber: 1000
+ * *  *        sync: 4500ms
+ *  *  *       Atomic: 1968ms
  */
 public class TestAtomic {
 
     AtomicInteger number = new AtomicInteger();
+
+    final Object object = new Object();
 
     int j = 0;
 
@@ -22,15 +35,17 @@ public class TestAtomic {
     }
 
     //58 ms
-    synchronized void m1() {
+    void m1() {
         for (int i = 0; i < 100000; i++) {
-            j++;
+            synchronized(object) {
+                j++;
+            }
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
         TestAtomic atomic = new TestAtomic();
-        Thread[] threads = new Thread[1];
+        Thread[] threads = new Thread[1000];
 
         for (int i = 0; i < threads.length; i++) {
             threads[i] = new Thread(atomic::m1);
@@ -48,7 +63,7 @@ public class TestAtomic {
 
         long end = System.currentTimeMillis();
         System.out.println("end: " + end);
-        System.out.println("Time elapsed: " + (end-start) + "ms");
+        System.out.println("Sync Time elapsed: " + (end-start) + "ms");
         System.out.println(atomic.j);
 
 //        Integer[] integers = new Integer[10];
@@ -59,5 +74,24 @@ public class TestAtomic {
         for (Integer i : integers) {
             System.out.println(i);
         }*/
+        System.out.println("======================");
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(atomic::m);
+        }
+
+        long start1 = System.currentTimeMillis();
+        System.out.println("start: " + start1);
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            thread.join();
+        }
+
+        long end1 = System.currentTimeMillis();
+        System.out.println("end: " + end);
+        System.out.println("Atomic Time elapsed: " + (end1-start1) + "ms");
+        System.out.println(atomic.j);
     }
 }
