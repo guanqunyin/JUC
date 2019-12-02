@@ -1,7 +1,5 @@
 package com.yin.juc.day2.day2_005_AtomicXxx;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -19,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * *  *        sync: 4500ms
  *  *  *       Atomic: 1968ms
  */
-public class TestAtomic {
+public class T02_TestAtomic {
 
     AtomicInteger number = new AtomicInteger();
 
@@ -44,7 +42,7 @@ public class TestAtomic {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        TestAtomic atomic = new TestAtomic();
+        T02_TestAtomic atomic = new T02_TestAtomic();
         Thread[] threads = new Thread[1000];
 
         for (int i = 0; i < threads.length; i++) {
