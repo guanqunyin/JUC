@@ -1,0 +1,16 @@
+--容器-Vector - Hashtable
+  加锁， 基本不用
+--CopyOnWriteList
+--ConcurrentHashMap
+--ConcurrentSkipListMap
+--BlockingQueue
+
+HashTable - > CHM
+- Queue List
+--提供了对线程友好的API
+-BlockingQueue
+-take, put 阻塞的方法
+
+TODO DelayQueue
+TODO SynchronousQueue
+TODO TransferQueue
