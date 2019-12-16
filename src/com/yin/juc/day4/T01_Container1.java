@@ -28,11 +28,13 @@ public class T01_Container1<E> {
             if(size==5) {
                 try {
                     object.notify();
+                    //释放锁，让t2得以执行
                     object.wait();
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
             }
+
         }
     }
 
