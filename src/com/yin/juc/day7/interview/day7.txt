@@ -1,0 +1,14 @@
+难易程度：LockSupport cas BlockingQueque AtomicInteger sync-wait-notify lock-condition
+
+-Executor
+    ExecutorService
+        AbstractExecutor
+            ThreadPoolExecutor
+                corePoolSize--
+                MaxPoolSize
+                keepAliveTime
+                TimeUnit
+                ThreadFactory
+                BlockingQueue
+                RejectStrategy(abort, Discard, DiscardOldest, CallerRun)
+
