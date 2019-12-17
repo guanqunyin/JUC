@@ -1,16 +1,44 @@
---容器-Vector - Hashtable
-  加锁， 基本不用
---CopyOnWriteList
---ConcurrentHashMap
---ConcurrentSkipListMap
---BlockingQueue
-
 HashTable - > CHM
 - Queue List
 --提供了对线程友好的API
 -BlockingQueue
 -take, put 阻塞的方法
 
-TODO DelayQueue
-TODO SynchronousQueue
-TODO TransferQueue
+﻿总结：
+1：对于map/set的选择使用
+HashMap
+TreeMap
+LinkedHashMap
+
+Hashtable
+Collections.sychronizedXXX
+
+ConcurrentHashMap
+ConcurrentSkipListMap
+
+2：队列
+ArrayList
+LinkedList
+Collections.synchronizedXXX
+CopyOnWriteList
+Queue
+	CocurrentLinkedQueue //concurrentArrayQueue
+	BlockingQueue
+		LinkedBQ
+		ArrayBQ
+		TransferQueue
+		SynchronusQueue
+	DelayQueue执行定时任务
+
+﻿同步容器类
+
+1：Vector Hashtable ：早期使用synchronized实现
+2：ArrayList HashSet ：未考虑多线程安全（未实现同步）
+3：HashSet vs Hashtable StringBuilder vs StringBuffer
+4：Collections.synchronized***工厂方法使用的也是synchronized
+
+使用早期的同步容器以及Collections.synchronized***方法的不足之处，请阅读：
+http://blog.csdn.net/itm_hadf/article/details/7506529
+
+使用新的并发容器
+http://xuganggogo.iteye.com/blog/321630
