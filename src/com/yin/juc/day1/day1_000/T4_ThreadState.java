@@ -21,6 +21,7 @@ public class T4_ThreadState {
 
         ThreadHelper.sleep(1, TimeUnit.SECONDS);
         System.out.println(myThread.getState());
+        System.out.println("this is just a test!");
 
     }
 }
